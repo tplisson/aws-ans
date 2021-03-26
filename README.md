@@ -5,7 +5,6 @@ https://aws.amazon.com/certification/certified-advanced-networking-specialty/
 
 
 <p align="center">
-  <img src="AWS-AdvNetworking-Specialty-2020.png">
   <img src="AWS-AdvNetworking-Specialty-2020.png" =343x350 {:height="60%" width="60%"}>
 </p>
 <br/>
