@@ -37,30 +37,31 @@ TOTAL | 100%
 • 1.3 Explain the process to extend connectivity using AWS DirectConnect |  
 • 1.4 Evaluate design alternatives that leverage AWS DirectConnect |  
 • 1.5 Define routing policies for hybrid IT architectures |  
-**Domain 2: Design and Implement AWS Networks** |   
+**Domain 2: Design and Implement AWS Networks** | 29%   
 • 2.1 Apply AWS networking concepts |  
 • 2.2 Given customer requirements, define network architectures on AWS |  
 • 2.3 Propose optimized designs based on the evaluation of an existing implementation |  
 • 2.4 Determine network requirements for a specialized workload |  
 • 2.5 Derive an appropriate architecture based on customer and application requirements  |  
 • 2.6 Evaluate and optimize cost allocations given a network design and application data flow |  
-**Domain 3: Automate AWS Tasks**  |  
+**Domain 3: Automate AWS Tasks**  | 8%  
 • 3.1 Evaluate automation alternatives within AWS for network deployments |  
 • 3.2 Evaluate tool-based alternatives within AWS for network operations and management |  
-**Domain 4: Configure Network Integration with Application Services** |
+**Domain 4: Configure Network Integration with Application Services** | 15%  
 • 4.1 Leverage the capabilities of Route53 |  
 • 4.2 Evaluate DNS solutions in a hybrid IT architecture |  
 • 4.3 Determine the appropriate configuration of DHCP within AWS |  
 • 4.4 Given a scenario, determine an appropriate load balancing strategy with in the AWS ecosystem  |  
 • 4.5 Determine a content distribution strategy to optimize for performance |  
 • 4.6 Reconcile AWS service requirements with network requirements   |  
-**Domain 5: Design and Implement for Security and Compliance** |  
+**Domain 5: Design and Implement for Security and Compliance** | 12%  
 • 5.1 Evaluate design requirements for alignment with security and compliance objectives  |  
 • 5.2 Evaluate monitoring strategies in support of security and compliance objectives |  
 • 5.3 Evaluate WS security features for managing network traffic |  
 • 5.4 Utilize encryption technologies to secure network communications |  
-**Domain 6: Manage, Optimize, and Troubleshoot the Network**  |  
+**Domain 6: Manage, Optimize, and Troubleshoot the Network**  | 13%  
 • 6.1 Given a scenario, troubleshoot and resolve a network issue |  
+TOTAL | 100%  
 
 <br/>
 
