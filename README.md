@@ -39,26 +39,26 @@ TOTAL | 100%
 • 2.1 Apply AWS networking concepts |  
 • 2.2 Given customer requirements, define network architectures on AWS |  
 • 2.3 Propose optimized designs based on the evaluation of an existing implementation |  
-• 2.4 Determinenetworkrequirementsforaspecializedworkload |  
-• 2.5 Deriveanappropriatearchitecturebasedoncustomerandapplicationrequirements  |  
-• 2.6 Evaluateandoptimizecostallocationsgivenanetworkdesignandapplicationdataflow |  
+• 2.4 Determine network requirements for a specialized workload |  
+• 2.5 Derive an appropriate architecture based on customer and application requirements  |  
+• 2.6 Evaluate and optimize cost allocations given a network design and application data flow |  
 **Domain 3: Automate AWS Tasks**  |  
-• 3.1 EvaluateautomationalternativeswithinAWSfornetworkdeployments |  
-• 3.2 Evaluatetool-basedalternativeswithinAWSfornetworkoperationsandmanagement |  
+• 3.1 Evaluate automation alternatives within AWS for network deployments |  
+• 3.2 Evaluate tool-based alternatives within AWS for network operations and management |  
 **Domain 4: Configure Network Integration with Application Services** |
-• 4.1 LeveragethecapabilitiesofRoute53 |  
-• 4.2 EvaluateDNSsolutionsinahybridITarchitecture |  
-• 4.3 DeterminetheappropriateconfigurationofDHCPwithinAWS |  
-• 4.4 Givenascenario,determineanappropriateloadbalancingstrategywithintheAWSecosystem  |  
-• 4.5 Determineacontentdistributionstrategytooptimizeforperformance |  
-• 4.6 ReconcileAWSservicerequirementswithnetworkrequirements   |  
+• 4.1 Leverage the capabilities of Route53 |  
+• 4.2 Evaluate DNS solutions in a hybrid IT architecture |  
+• 4.3 Determine the appropriate configuration of DHCP within AWS |  
+• 4.4 Given a scenario, determine an appropriate load balancing strategy with in the AWS ecosystem  |  
+• 4.5 Determine a content distribution strategy to optimize for performance |  
+• 4.6 Reconcile AWS service requirements with network requirements   |  
 **Domain 5: Design and Implement for Security and Compliance** |  
-• 5.1 Evaluatedesignrequirementsforalignmentwithsecurityandcomplianceobjectives  |  
-• 5.2 Evaluatemonitoringstrategiesinsupportofsecurityandcomplianceobjectives |  
-• 5.3 EvaluateAWSsecurityfeaturesformanagingnetworktraffic |  
-• 5.4 Utilizeencryptiontechnologiestosecurenetworkcommunications |  
+• 5.1 Evaluate design requirements for alignment with security and compliance objectives  |  
+• 5.2 Evaluate monitoring strategies in support of security and compliance objectives |  
+• 5.3 Evaluate WS security features for managing network traffic |  
+• 5.4 Utilize encryption technologies to secure network communications |  
 **Domain 6: Manage, Optimize, and Troubleshoot the Network**  |  
-• 6.1 Givenascenario,troubleshootandresolveanetworkissue |  
+• 6.1 Given a scenario, troubleshoot and resolve a network issue |  
 
 <br/>
 
@@ -71,15 +71,15 @@ https://docs.aws.amazon.com/
 ## AWS ANS-C00 Training  
 
 - Course from "a Cloud Guru":  
-https://learn.acloud.guru/course/aws-networking-specialty/learn/
+https://learn.acloud.guru/course/aws-networking-specialty/learn/  
 by Steven Moran & Brock Tubre
 
 <br/>
 
-## AWS ANS-C00 Lab Exercises
+## AWS ANS-C00 Lab Exercises  
 
-- Whizlabs Labs & Practice exams 
-  https://www.whizlabs.com/learn/course/aws-cans-practice-tests
+- Whizlabs Labs & Practice exams  
+  https://www.whizlabs.com/learn/course/aws-cans-practice-tests  
 
 <br/>
 
