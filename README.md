@@ -13,7 +13,7 @@ https://aws.amazon.com/certification/certified-advanced-networking-specialty/
 **Version 1.3 ANS-C00**   
 <br/> 
 
-## AWS ANS-COO Curriculum  
+## AWS ANS-C00 Curriculum  
 
 Updated exam curriculum for v1.20  
 https://github.com/cncf/curriculum/
