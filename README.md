@@ -29,6 +29,8 @@ Domain 5: Design and Implement for Security and Compliance | 12%
 Domain 6: Manage, Optimize, and Troubleshoot the Network | 13%  
 TOTAL | 100%  
 
+**Domain**	| **Weight** |  
+:------- | :-------------|  
 **Domain 1: Design and Implement Hybrid IT Network Architectures at Scale** | 23%   
 • 1.1 Implement connectivity for hybrid IT |  
 • 1.2 Given a scenario, derive an appropriate hybrid IT architecture connectivity solution |  
