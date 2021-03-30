@@ -73,6 +73,9 @@ https://docs.aws.amazon.com/
 
 ## AWS ANS-C00 Training  
 
+- AWS Exam Readiness:
+https://www.aws.training/Details/Curriculum?id=21330
+
 - Course from "a Cloud Guru":  
 https://learn.acloud.guru/course/aws-networking-specialty/learn/  
 by Steven Moran & Brock Tubre
