@@ -121,6 +121,7 @@ resource "aws_instance" "web" {
   instance_type = "t2.nano"
   subnet_id     = aws_subnet.cidr1.id
   private_ip    = "10.0.0.10"
+  associate_public_ip_address = true
 
   tags = {
     Name = "nat-gw-demo-ec2-web"
