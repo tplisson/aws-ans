@@ -15,13 +15,13 @@ provider "aws" {
 
 # Configure two VPCs
 resource "aws_vpc" "vpc1" {
-  cidr_block  = "10.1.0.0/16"
+  cidr_block  = "10.0.0.0/16"
   tags = {
     Name = "vpc1"
   }
 }
 resource "aws_vpc" "vpc2" {
-  cidr_block  = "10.2.0.0/16"
+  cidr_block  = "172.31.0.0/16"
   tags = {
     Name = "vpc2"
   }
@@ -31,7 +31,7 @@ resource "aws_vpc" "vpc2" {
 resource "aws_subnet" "cidr1" {
   depends_on        = [aws_vpc.vpc1]
   vpc_id            = aws_vpc.vpc1.id
-  cidr_block        = "10.1.1.0/24"
+  cidr_block        = "10.0.0.0/24"
   availability_zone = "us-east-1a"
   tags = {
     Name = "vpc-peering-demo-cidr1"
@@ -40,7 +40,7 @@ resource "aws_subnet" "cidr1" {
 resource "aws_subnet" "cidr2" {
   depends_on        = [aws_vpc.vpc2]
   vpc_id            = aws_vpc.vpc2.id
-  cidr_block        = "10.2.2.0/24"
+  cidr_block        = "172.31.0.0/24"
   availability_zone = "us-east-1b"
   tags = {
     Name = "vpc-peering-demo-cidr2"
@@ -108,15 +108,50 @@ resource "aws_security_group" "SG2_allow_ssh_ping" {
   }
 }
 
-# Configuring VM1 in VPC1
+# Configuring the local SSH key
+resource "aws_key_pair" "ubuntu" {
+  key_name   = "ubuntu"
+  public_key = file("key.pub")
+}
+
+# Configuring EC2 Instance for VM1 in VPC1
 resource "aws_instance" "vm1" {
   ami           = data.aws_ami.latest-ubuntu.id
   instance_type = "t2.nano"
+  key_name      = aws_key_pair.ubuntu.key_name
   subnet_id     = aws_subnet.cidr1.id
-  private_ip    = "10.1.1.11"
+  private_ip    = "10.0.0.4"
   associate_public_ip_address = true
+  vpc_security_group_ids = [ aws_security_group.SG1_allow_ssh_ping.id ]
   tags = {
     Name = "vm1"
+  }
+}
+# Configure an IGW
+resource "aws_internet_gateway" "igw" {
+  depends_on = [
+    aws_vpc.vpc1,
+    aws_subnet.cidr1
+  ]
+  vpc_id  = aws_vpc.vpc1.id
+  tags = {
+    Name = "vpc1-igw"
+  }
+}
+
+# Configure default routes
+resource "aws_route_table" "rt-igw" {
+  depends_on = [
+    aws_vpc.vpc1,
+    aws_internet_gateway.igw
+  ]
+  vpc_id = aws_vpc.vpc1.id
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.igw.id
+  }
+  tags = {
+    Name = "vpc1-rt-igw-0/0"
   }
 }
 
@@ -124,8 +159,10 @@ resource "aws_instance" "vm1" {
 resource "aws_instance" "vm2" {
   ami           = data.aws_ami.latest-ubuntu.id
   instance_type = "t2.nano"
+  key_name      = aws_key_pair.ubuntu.key_name
   subnet_id     = aws_subnet.cidr2.id
-  private_ip    = "10.2.2.22"
+  private_ip    = "172.31.0.8"
+  vpc_security_group_ids = [ aws_security_group.SG2_allow_ssh_ping.id ]
   tags = {
     Name = "vm2"
   }
