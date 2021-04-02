@@ -88,14 +88,14 @@ resource "aws_security_group" "SG2_allow_ssh_ping" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["10.0.0.0/16"]
   }
   ingress {
     description = "ICMP PING from Anywhere"
     from_port   = 0
     to_port     = 0
     protocol    = "icmp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["10.0.0.0/16"]
   }
   egress {
     from_port   = 0
@@ -139,8 +139,19 @@ resource "aws_internet_gateway" "igw" {
   }
 }
 
-# Configure default routes
-resource "aws_route_table" "rt-igw" {
+# Configure a VPC Peering between VPC1 and VPC2
+resource "aws_vpc_peering_connection" "vpcp" {
+  vpc_id        = aws_vpc.vpc1.id
+  peer_vpc_id   = aws_vpc.vpc2.id
+  auto_accept   = true
+
+  tags = {
+    Name = "VPC Peering between VPC1 and VPC2"
+  }
+}
+
+# Configure a default route
+resource "aws_route_table" "rt1" {
   depends_on = [
     aws_vpc.vpc1,
     aws_internet_gateway.igw
@@ -150,10 +161,21 @@ resource "aws_route_table" "rt-igw" {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.igw.id
   }
+  route {
+    cidr_block = "172.31.0.0/16"
+    gateway_id = aws_vpc_peering_connection.vpcp.id
+  }
   tags = {
-    Name = "vpc1-rt-igw-0/0"
+    Name = "VPC1 default route 0/0 + route to VPC2"
   }
 }
+
+# Associate the default route with the cidr1 subnet
+resource "aws_route_table_association" "rt1-cidr1" {
+  subnet_id      = aws_subnet.cidr1.id
+  route_table_id = aws_route_table.rt1.id
+}
+
 
 # Configuring VM2 in VPC2
 resource "aws_instance" "vm2" {
@@ -166,6 +188,28 @@ resource "aws_instance" "vm2" {
   tags = {
     Name = "vm2"
   }
+}
+
+# Configure a route from VPC2 to VPC1
+resource "aws_route_table" "rt2" {
+  depends_on = [
+    aws_vpc.vpc2,
+    aws_internet_gateway.igw
+  ]
+  vpc_id = aws_vpc.vpc2.id
+  route {
+    cidr_block = "10.0.0.0/16"
+    gateway_id = aws_vpc_peering_connection.vpcp.id
+  }
+  tags = {
+    Name = "VPC2 route to VPC1"
+  }
+}
+
+# Associate the default route with the cidr1 subnet
+resource "aws_route_table_association" "rt2-cidr2" {
+  subnet_id      = aws_subnet.cidr2.id
+  route_table_id = aws_route_table.rt2.id
 }
 
 # Getting the AWS AMI ID for the lastest version of Ubuntu 16.04 server
