@@ -62,8 +62,8 @@ resource "aws_security_group" "SG1_allow_ssh_ping" {
   }
   ingress {
     description = "ICMP PING from Anywhere"
-    from_port   = 0
-    to_port     = 0
+    from_port   = -1
+    to_port     = -1
     protocol    = "icmp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -88,14 +88,14 @@ resource "aws_security_group" "SG2_allow_ssh_ping" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/16"]
+    cidr_blocks = ["10.0.0.0/24"]
   }
   ingress {
     description = "ICMP PING from Anywhere"
-    from_port   = 0
-    to_port     = 0
+    from_port   = -1
+    to_port     = -1
     protocol    = "icmp"
-    cidr_blocks = ["10.0.0.0/16"]
+    cidr_blocks = ["10.0.0.0/24"]
   }
   egress {
     from_port   = 0
@@ -198,7 +198,7 @@ resource "aws_route_table" "rt2" {
   ]
   vpc_id = aws_vpc.vpc2.id
   route {
-    cidr_block = "10.0.0.0/16"
+    cidr_block = "10.0.0.0/24"
     gateway_id = aws_vpc_peering_connection.vpcp.id
   }
   tags = {
