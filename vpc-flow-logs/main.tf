@@ -10,12 +10,12 @@ terraform {
 
 # Configure the AWS Provider
 provider "aws" {
-  region = "us-east-1"
+  region = var.aws_region
 }
 
 # Configure VPC1
 resource "aws_vpc" "vpc1" {
-  cidr_block  = "10.10.0.0/16"
+  cidr_block  = var.vpc_cidr
   tags = {
     Name = "vpc1"
   }
@@ -25,14 +25,14 @@ resource "aws_vpc" "vpc1" {
 resource "aws_subnet" "cidr1" {
   depends_on        = [aws_vpc.vpc1]
   vpc_id            = aws_vpc.vpc1.id
-  cidr_block        = "10.10.10.0/24"
-  availability_zone = "us-east-1a"
+  cidr_block        = var.subnet_cidr
+  availability_zone = var.aws_az1
   tags = {
     Name = "cidr1"
   }
 }
 
-# Configure a Security Groups to allow HTTP/S, SSH and ICMP PINGs
+# Configure a Security Groups to allow HTTP, SSH and ICMP PINGs
 resource "aws_security_group" "sg1" {
   name        = "sg1"
   description = "Allow HTTP/s, SSH and PING traffic"
@@ -46,9 +46,9 @@ resource "aws_security_group" "sg1" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   ingress {
-    description = "HTTPS from Anywhere"
-    from_port   = 443
-    to_port     = 443
+    description = "HTTP:8000 from Anywhere"
+    from_port   = 8000
+    to_port     = 8000
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -117,6 +117,9 @@ resource "aws_route_table_association" "rt1-cidr1" {
   route_table_id = aws_route_table.rt1.id
 }
 
+data "template_file" "server-config" {
+  template = file("scripts/add-ssh-web-app.yaml")
+}
 
 # Configuring EC2 Instance for webserver in VPC1
 resource "aws_instance" "webserver" {
@@ -124,31 +127,10 @@ resource "aws_instance" "webserver" {
   instance_type = "t2.nano"
   key_name      = aws_key_pair.ubuntu.key_name
   subnet_id     = aws_subnet.cidr1.id
-  private_ip    = "10.10.10.10"
+  private_ip    = var.ec2_ip1
   associate_public_ip_address = true
-  vpc_security_group_ids = [ aws_security_group.sg1.id ]
-
-  # Copies the index.html file to the webserver instance
-  provisioner "file" {
-    source      = "index.html"
-    destination = "/home/ubuntu/index.html"
-  }
-
-  # Install Python and run SimpleHTTPServer on port 80
-  provisioner "remote-exec" {
-    inline = [
-      "sudo apt update -qq",
-      "sudo apt install -y python",
-      "python -m SimpleHTTPServer 80 &",
-    ]
-  }
-  connection {
-    type        = "ssh"
-    host        = self.public_ip
-    user        = "ubuntu"
-    private_key = file("key")
-  }
-
+  vpc_security_group_ids  = [ aws_security_group.sg1.id ]
+  user_data               = data.template_file.server-config.rendered 
   tags = {
     "Name"      = "Webserver"
     "Terraform" = "true"
@@ -168,4 +150,60 @@ data "aws_ami" "latest-ubuntu" {
     name   = "virtualization-type"
     values = ["hvm"]
   }
+}
+
+# Configure CoudWatch Logging
+resource "aws_flow_log" "example" {
+  iam_role_arn    = aws_iam_role.example.arn
+  log_destination = aws_cloudwatch_log_group.example.arn
+  traffic_type    = "ALL"
+  vpc_id          = aws_vpc.vpc1.id
+}
+
+resource "aws_cloudwatch_log_group" "example" {
+  name = "example"
+}
+
+resource "aws_iam_role" "example" {
+  name = "example"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "vpc-flow-logs.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy" "example" {
+  name = "example"
+  role = aws_iam_role.example.id
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents",
+        "logs:DescribeLogGroups",
+        "logs:DescribeLogStreams"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    }
+  ]
+}
+EOF
 }
