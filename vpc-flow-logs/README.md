@@ -18,7 +18,7 @@ ssh -i key lab@$(terraform output -raw instance_public_ip)
 ### CloudWatch Logging
 
 Check the flow logs in CloudWatch after a few minutes.
-You should see logs such as this:
+You should see logs such as these:
 ```
 -------------------------------------------------------------------------------------------------------------------------------------------
 |   timestamp   |                                                         message                                                         |
