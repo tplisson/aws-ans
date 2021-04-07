@@ -33,8 +33,8 @@ resource "aws_subnet" "cidr1" {
 }
 
 # Configure a Security Groups to allow HTTP, SSH and ICMP PINGs
-resource "aws_security_group" "sg1" {
-  name        = "sg1"
+resource "aws_security_group" "sg1_http_ssh_ping" {
+  name        = "sg1_http_ssh_ping"
   description = "Allow HTTP/s, SSH and PING traffic"
   vpc_id      = aws_vpc.vpc1.id
 
@@ -73,13 +73,13 @@ resource "aws_security_group" "sg1" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   tags = {
-    Name = "SG1"
+    Name = "sg1_http_ssh_ping"
   }
 }
 
 # Configuring the local SSH key
-resource "aws_key_pair" "ubuntu" {
-  key_name   = "ubuntu"
+resource "aws_key_pair" "key" {
+  key_name   = "key"
   public_key = file("key.pub")
 }
 
@@ -96,7 +96,7 @@ resource "aws_internet_gateway" "igw" {
 }
 
 # Configure a default route
-resource "aws_route_table" "rt1" {
+resource "aws_route_table" "rt0" {
   depends_on = [
     aws_vpc.vpc1,
     aws_internet_gateway.igw
@@ -112,24 +112,24 @@ resource "aws_route_table" "rt1" {
 }
 
 # Associate the default route with the cidr1 subnet
-resource "aws_route_table_association" "rt1-cidr1" {
+resource "aws_route_table_association" "rt0-cidr1" {
   subnet_id      = aws_subnet.cidr1.id
-  route_table_id = aws_route_table.rt1.id
+  route_table_id = aws_route_table.rt0.id
 }
 
 data "template_file" "server-config" {
-  template = file("scripts/add-ssh-web-app.yaml")
+  template = file("cloud-init-script-webserver.yaml")
 }
 
 # Configuring EC2 Instance for webserver in VPC1
 resource "aws_instance" "webserver" {
   ami           = data.aws_ami.latest-ubuntu.id
   instance_type = "t2.nano"
-  key_name      = aws_key_pair.ubuntu.key_name
+  key_name      = aws_key_pair.key.key_name
   subnet_id     = aws_subnet.cidr1.id
   private_ip    = var.ec2_ip1
   associate_public_ip_address = true
-  vpc_security_group_ids  = [ aws_security_group.sg1.id ]
+  vpc_security_group_ids  = [ aws_security_group.sg1_http_ssh_ping.id ]
   user_data               = data.template_file.server-config.rendered 
   tags = {
     "Name"      = "Webserver"
@@ -152,20 +152,20 @@ data "aws_ami" "latest-ubuntu" {
   }
 }
 
-# Configure CoudWatch Logging
-resource "aws_flow_log" "example" {
-  iam_role_arn    = aws_iam_role.example.arn
-  log_destination = aws_cloudwatch_log_group.example.arn
+# Configure AWS Flow Log with CoudWatch logging
+resource "aws_flow_log" "lab-demo" {
+  iam_role_arn    = aws_iam_role.lab-role.arn
+  log_destination = aws_cloudwatch_log_group.lab-demo.arn
   traffic_type    = "ALL"
   vpc_id          = aws_vpc.vpc1.id
 }
 
-resource "aws_cloudwatch_log_group" "example" {
-  name = "example"
+resource "aws_cloudwatch_log_group" "lab-demo" {
+  name = "lab-demo"
 }
 
-resource "aws_iam_role" "example" {
-  name = "example"
+resource "aws_iam_role" "lab-role" {
+  name = "lab-role"
 
   assume_role_policy = <<EOF
 {
@@ -184,9 +184,9 @@ resource "aws_iam_role" "example" {
 EOF
 }
 
-resource "aws_iam_role_policy" "example" {
-  name = "example"
-  role = aws_iam_role.example.id
+resource "aws_iam_role_policy" "lab-policy" {
+  name = "lab-policy"
+  role = aws_iam_role.lab-role.id
 
   policy = <<EOF
 {

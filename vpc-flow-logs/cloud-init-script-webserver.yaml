@@ -1,0 +1,59 @@
+#cloud-config
+# Add groups to the system
+# Adds the ubuntu group with members 'root' and 'sys'
+# and the empty group hashicorp.
+groups:
+  - ubuntu: [root,sys]
+  - lab
+
+# Add users to the system. Users are added after groups are added.
+users:
+  - default
+  - name: lab
+    gecos: lab
+    primary_group: lab
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users, admin
+    shell: /bin/bash
+    plain_text_passwd: 'lab123'
+    ssh_import_id:
+    lock_passwd: false
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDpXD+Oq0WYNynrjWj6avAnVHr2B4j5FZr10lRcPoA8nXqb5xaGdhkZuVgWGgpZDVFdmSsqjQsKjDKMMX5NHQDUDz0fUokPoawhafihc+UIaSsKjHGUwKtKURmrXld5mowKPrEN75hnWukACi+0d5Lr0sptyoCXm4ryktyjCkRa76mE2zcdJ2IIK+or48znEW+OGGNQrld0DdvZX2V492OoFZ+b5eOMglWkShPIdkyWt/QN3HzEJHr2Um5HpxkuJX4Zu8YekzO44LKqejcmq74bSrEeGsWAPlG7UFhsNv+EmFyqQU9rFhcN3pbcB1KlxNYDsnF051er67HbxXmCzqGnVNo/mbV55WAKM8CZ7XPN+LUIJalg9PhtdqPch/SCD3K06gukOFr7pC0omrV65xfFZ5/Jl9bWm9OroOFcC2ANff9vTTrGPkodjMmJRq7NDr4qNt2/TK/LA3d5LCw6IdLseujXECLT4BLgPSU/Z8Oo1NUB8xJkys7EljdMKi38K0E= lab@example.com
+
+write_files:
+  - path: /index.html
+    content: |
+      <html>
+      <link rel="preconnect" href="https://fonts.gstatic.com">
+      <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;700&display=swap" rel="stylesheet">
+      <head>
+        <title>Test Website</title>
+      </head>
+      <body>
+        <br/><br/>
+        <h1 align="center" style="font-family:Ubuntu">WELCOME TO YOUR TEST WEBSITE</h1>
+        <br/>
+        <h3 align="center" style="font-family:Ubuntu">This is all about AWS flow logs </h3>
+        <br/><br/>
+        <p align="center">
+          <img src="https://d2908q01vomqb2.cloudfront.net/da4b9237bacccdf19c0760cab7aec4a8359010b0/2019/09/13/2019-08-13_10-41-04.png">
+        </p>
+        <br/>
+      </body>
+      </html>
+
+apt:
+  primary:
+    - arches: [default]
+      search_dns: True
+
+# Downloads the Python package
+packages:
+  - python
+
+# Launch the SimpleHTTPServer on port 80
+runcmd:
+  - python -m SimpleHTTPServer 80 &
+
+final_message: "The system is finally up, after $UPTIME seconds"
