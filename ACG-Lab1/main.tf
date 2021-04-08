@@ -111,31 +111,39 @@ resource "aws_route_table_association" "rt0-ATD_private4" {
 }
 
 # Configure a NACL for subnet ATD_Public1
-resource "aws_network_acl" "ATD_Public1" {
-  vpc_id = aws_vpc.ATD_VPC.id
+# resource "aws_network_acl" "ATD_Public1" {
+#   vpc_id      = aws_vpc.ATD_VPC.id
+#   subnet_ids  = [ aws_subnet.ATD_public1.id ]
 
-  ingress {
-    rule_no    = 110
-    protocol   = "tcp"
-    action     = "allow"
-    cidr_block = "192.168.0.10/32"
-    from_port  = 22
-    to_port    = 22
-  }
+#   ingress {
+#     rule_no    = 110
+#     protocol   = "tcp"
+#     action     = "allow"
+#     cidr_block = "192.168.0.10/32"
+#     from_port  = 22
+#     to_port    = 22
+#   }
+#   ingress {
+#     rule_no    = 110
+#     protocol   = "tcp"
+#     action     = "allow"
+#     cidr_block = "192.168.0.10/32"
+#     from_port  = 22
+#     to_port    = 22
+#   }
+#   egress {
+#     rule_no    = 110
+#     protocol   = "tcp"
+#     action     = "allow"
+#     cidr_block = "192.168.0.10/32"
+#     from_port  = 1024
+#     to_port    = 65535
+#   }
 
-  egress {
-    rule_no    = 110
-    protocol   = "tcp"
-    action     = "allow"
-    cidr_block = "192.168.0.10/32"
-    from_port  = 1024
-    to_port    = 65535
-  }
-
-  tags = {
-    Name = "ATD_Public1"
-  }
-}
+#   tags = {
+#     Name = "ATD_Public1"
+#   }
+# }
 
 # Configure a Security Groups to allow HTTP, SSH and ICMP PINGs
 resource "aws_security_group" "ATD_Bastion-SG" {
@@ -144,18 +152,33 @@ resource "aws_security_group" "ATD_Bastion-SG" {
   vpc_id      = aws_vpc.ATD_VPC.id
 
   ingress {
-    description = "SSH from Anywhere"
+    description = "RemoteAdmin"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
+  ingress {
+    description = "ICMP PING from Anywhere"
+    from_port   = -1
+    to_port     = -1
+    protocol    = "icmp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  egress {
+    description = "SSH to AppServers"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["192.168.0.0/24"]
+  }
+  # egress {
+  #   description = "Allow everything else"
+  #   from_port   = 0
+  #   to_port     = 0
+  #   protocol    = "-1"
+  #   cidr_blocks = ["0.0.0.0/0"]
+  # }
   tags = {
     Name = "ATD_Bastion-SG"
   }
@@ -169,10 +192,10 @@ resource "aws_key_pair" "key" {
 
 # Configuring the cloud-init script
 data "template_file" "cloud-init-config" {
-  template = file("cloud-init-bastion.yaml")
+  template = file("cloud-init-ec2.yaml")
 }
 
-# Configuring EC2 Instance for webserver in VPC1
+# Configuring EC2 Instance for the Bastion Host in the Public subnet
 resource "aws_instance" "BastionHost" {
   ami           = data.aws_ami.latest-ubuntu.id
   instance_type = "t2.nano"
@@ -185,7 +208,6 @@ resource "aws_instance" "BastionHost" {
   tags = {
     "Name"      = "BastionHost"
   }
-
 }
 
 # Getting the AWS AMI ID for the lastest version of Ubuntu 16.04 server
@@ -199,5 +221,74 @@ data "aws_ami" "latest-ubuntu" {
   filter {
     name   = "virtualization-type"
     values = ["hvm"]
+  }
+}
+
+# Configure a Security Group for ATD_Private34_SecGrp
+resource "aws_security_group" "ATD_Private34_SecGrp" {
+  name        = "ATD_Private34_SecGrp"
+  description = "Allow traffic to subnets Private3 and 4"
+  vpc_id      = aws_vpc.ATD_VPC.id
+
+  ingress {
+    description = "SSH from Bastion Host"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["192.168.0.0/26"]
+  }
+  ingress {
+    description = "ICMP PING from Bastion Host"
+    from_port   = -1
+    to_port     = -1
+    protocol    = "icmp"
+    cidr_blocks = ["192.168.0.0/26"]
+  }
+  egress {
+    description = "Allow all HTTPS"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  egress {
+    description = "Allow all ICMP"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "icmp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags = {
+    Name = "ATD_Private34_SecGrp"
+  }
+}
+
+# Configuring EC2 Instance in the Private3 Subnet
+resource "aws_instance" "ATD_Private3" {
+  ami           = data.aws_ami.latest-ubuntu.id
+  instance_type = "t2.nano"
+  key_name      = aws_key_pair.key.key_name
+  subnet_id     = aws_subnet.ATD_private3.id
+  private_ip    = var.ec2_ip2
+  associate_public_ip_address = false
+  vpc_security_group_ids  = [ aws_security_group.ATD_Private34_SecGrp.id ]
+  user_data               = data.template_file.cloud-init-config.rendered 
+  tags = {
+    "Name"      = "App-Servers3"
+  }
+}
+
+# Configuring EC2 Instance in the Private4 Subnet
+resource "aws_instance" "ATD_Private4" {
+  ami           = data.aws_ami.latest-ubuntu.id
+  instance_type = "t2.nano"
+  key_name      = aws_key_pair.key.key_name
+  subnet_id     = aws_subnet.ATD_private4.id
+  private_ip    = var.ec2_ip3
+  associate_public_ip_address = false
+  vpc_security_group_ids  = [ aws_security_group.ATD_Private34_SecGrp.id ]
+  user_data               = data.template_file.cloud-init-config.rendered 
+  tags = {
+    "Name"      = "App-Servers4"
   }
 }

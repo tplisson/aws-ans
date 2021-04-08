@@ -12,7 +12,7 @@ variable "aws_az2" {
 }
 variable "vpc_cidr" {
   description = "CIDR block for the VPC"
-  default     = "192.168.0.0/16"
+  default     = "192.168.0.0/24"
 }
 variable "subnet_public1" {
   description = "CIDR block for the subnet"
@@ -31,6 +31,14 @@ variable "subnet_private4" {
   default     = "192.168.0.192/26"
 }
 variable "ec2_ip1" {
-  description = "EC2's IPv4 address"
+  description = "EC2's IPv4 address in the Public1 subnet"
   default     = "192.168.0.10"
+}
+variable "ec2_ip2" {
+  description = "EC2's IPv4 address in the Private3 subnet"
+  default     = "192.168.0.150"
+}
+variable "ec2_ip3" {
+  description = "EC2's IPv4 address in the Private3 subnet"
+  default     = "192.168.0.200"
 }

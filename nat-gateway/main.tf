@@ -75,7 +75,7 @@ resource "aws_route_table" "rt-igw" {
 resource "aws_eip" "eip1" {
   vpc = true
   tags = {
-    Name = "nat-gw-demo-nat-gw-eip1"
+    Name = "nat-gw-demo-eip1"
   }
 }
 
