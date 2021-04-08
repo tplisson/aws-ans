@@ -13,10 +13,9 @@ https://aws.amazon.com/certification/certified-advanced-networking-specialty/
 **Version 1.3 ANS-C00**   
 <br/> 
 
-## AWS ANS-C00 Curriculum  
+## AWS ANS-C00 Exam Outline v1.3 
 
-Updated exam curriculum for v1.20  
-https://github.com/cncf/curriculum/
+https://d1.awsstatic.com/training-and-certification/docs-advnetworking-spec/AWS-Certified-Advanced-Networking-Specialty_Exam-Guide.pdf
 
 
 **Domain**	| **Weight** |  
@@ -28,6 +27,7 @@ Domain 4: Configure Network Integration with Application Services | 15%
 Domain 5: Design and Implement for Security and Compliance | 12%   
 Domain 6: Manage, Optimize, and Troubleshoot the Network | 13%  
 TOTAL | 100%  
+
 
 **Domain**	| **Weight** |  
 :------- | :-------------|  
@@ -91,4 +91,3 @@ by Steven Moran & Brock Tubre
 
 ## AWS ANS-C00 Exam Tips
 
----
