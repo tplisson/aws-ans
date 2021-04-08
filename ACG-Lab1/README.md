@@ -1,7 +1,5 @@
 # ACG Lab 1 - Multi-Subnet VPC with Secure Access to Private Servers with Outbound Internet Access
 
-![Lab 1 Diagram](ACG-Lab1.png)
-
 ### VPC 
 Terraform config file: [`main.tf`](main.tf)
 
@@ -9,4 +7,6 @@ Terraform config file: [`main.tf`](main.tf)
 [`cloud-init-script-webserver.yaml`](cloud-init-script-webserver.yaml)
 
 ---
+![Lab 1 Diagram](ACG-Lab1.png)
+
 
