@@ -1,4 +1,4 @@
-# AWS Certified Advanced Networking – Specialty (ANS-C00) Preparation
+# AWS Certified Advanced Networking – Specialty (ANS-C00)
 
 This is my preparation notes for the AWS Certified Advanced Networking – Specialty (ANS-C00) exam.  
 https://aws.amazon.com/certification/certified-advanced-networking-specialty/

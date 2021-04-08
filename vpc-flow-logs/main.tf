@@ -117,8 +117,9 @@ resource "aws_route_table_association" "rt0-cidr1" {
   route_table_id = aws_route_table.rt0.id
 }
 
-data "template_file" "server-config" {
-  template = file("cloud-init-script-webserver.yaml")
+# Configuring the cloud-init script
+data "template_file" "cloud-init-config" {
+  template = file("cloud-init-webserver.yaml")
 }
 
 # Configuring EC2 Instance for webserver in VPC1
@@ -130,7 +131,7 @@ resource "aws_instance" "webserver" {
   private_ip    = var.ec2_ip1
   associate_public_ip_address = true
   vpc_security_group_ids  = [ aws_security_group.sg1_http_ssh_ping.id ]
-  user_data               = data.template_file.server-config.rendered 
+  user_data               = data.template_file.cloud-init-config.rendered 
   tags = {
     "Name"      = "Webserver"
     "Terraform" = "true"

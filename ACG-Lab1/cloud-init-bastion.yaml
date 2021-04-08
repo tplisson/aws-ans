@@ -1,0 +1,24 @@
+#cloud-config
+# Add groups to the system
+# Adds the ubuntu group with members 'root' and 'sys'
+# and the empty group hashicorp.
+groups:
+  - ubuntu: [root,sys]
+  - lab
+
+# Add users to the system. Users are added after groups are added.
+users:
+  - default
+  - name: lab
+    gecos: lab
+    primary_group: lab
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users, admin
+    shell: /bin/bash
+    plain_text_passwd: 'lab123'
+    ssh_import_id:
+    lock_passwd: false
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCzCyl6FXjDweGo00k9xLlEECDB69JBTLSCZyGhL5kzvmcaWyoB6QKq/MhZu8l/tEKGbaMfjbkv7UwvPO3xOHyDT/HPq2nBC9MGCf9gqmNLXDund9TILltNTCyxmDLiWm6Q00NT/Kk/xUrpU6RjTIct8mSj0iEtwgo45Xxv8MT4IXNB9aUx7yhVVzun4rcN78T5WYTLnp7A4ScOLRWJyoBkDQoTFG1LrB7CpFkPLOBiHH8l8qFjQQSTkDmYnj60bKoxkn9Iejkrb6VDpFa43FjzthnguH83EmaGiAETkkbvh/Ew5brZricB48s+RfdTW/QfEXFXaY3+eYGXHcYYIFAMZqZ4rlHV36KuXg4Lmegbst4BZAiZI8GSBUKGCjj1MrTPu25DyVaHWpei4LIg4PHs+7DQWINKNPqW1ccPaIppIsfKxiT6zzVxFbl7DBLJ5zcr43qeqFTovwJN4TKsacuZrcLQA4YcM7QR2hiWrlTudad1QIRKT4A9v1guHW0S53E= lab
+
+final_message: "The system is finally up, after $UPTIME seconds"
