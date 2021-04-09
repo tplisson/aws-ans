@@ -12,7 +12,11 @@ Create an SSH key for the EC2 instances:
 ssh-keygen -C "lab@example.com" -f key
 ```
 
-Copy the 
+Copy the content of the SSH public key into the [`cloud-init-script-webserver.yaml`](cloud-init-script-webserver.yaml) file under `ssh_authorized_keys`:
+```YAML
+    ssh_authorized_keys:
+      # YOUR SSH KEY GOES HERE: - ssh-rsa AAAABXXXXXXXXXX= lab@example.com
+```
 
 ## Terraform deployement  
 
