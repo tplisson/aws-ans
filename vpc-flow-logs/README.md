@@ -31,6 +31,11 @@ Terraform configuration:
 - [`main.tf`](main.tf): main set of configuration for the webserver EC2 instance and associated VPC Flow Log profile
 - [`cloud-init-script-webserver.yaml`](cloud-init-script-webserver.yaml): [cloud-init](https://learn.hashicorp.com/tutorials/terraform/cloud-init) initialization for a simple Python web server based on the EC2 Ubuntu server (for those like me who don't have access to the AWS AMI marketplace)
 
+Initialize and apply the Terraform code:
+```
+terraform init
+terraform apply -auto-approve
+```
 
 ## Results  
 
