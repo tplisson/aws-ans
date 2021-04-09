@@ -10,110 +10,134 @@ terraform {
 
 # Configure the AWS Provider
 provider "aws" {
-  region = var.aws_region
+  region = var.AWS-REGION
 }
 
-# Configure ATD_VPC
-resource "aws_vpc" "ATD_VPC" {
-  cidr_block  = var.vpc_cidr
+# Configure VPC1
+resource "aws_vpc" "VPC1" {
+  cidr_block = var.VPC1-CIDR
   tags = {
-    Name = "ATD_VPC"
+    Name = "VPC1"
   }
 }
 
-# Configure 4x subnets in ATD_VPC
-resource "aws_subnet" "ATD_public1" {
-  depends_on        = [aws_vpc.ATD_VPC]
-  vpc_id            = aws_vpc.ATD_VPC.id
-  cidr_block        = var.subnet_public1
-  availability_zone = var.aws_az1
+# Configure 4x subnets in VPC1
+resource "aws_subnet" "PUBLIC1" {
+  depends_on        = [aws_vpc.VPC1]
+  vpc_id            = aws_vpc.VPC1.id
+  cidr_block        = var.SUBNET-PUBLIC1
+  availability_zone = var.AWS-AZ1
   tags = {
-    Name = "ATD_public1"
+    Name = "PUBLIC1"
   }
 }
-resource "aws_subnet" "ATD_public2" {
-  depends_on        = [aws_vpc.ATD_VPC]
-  vpc_id            = aws_vpc.ATD_VPC.id
-  cidr_block        = var.subnet_public2
-  availability_zone = var.aws_az2
+resource "aws_subnet" "PUBLIC2" {
+  depends_on        = [aws_vpc.VPC1]
+  vpc_id            = aws_vpc.VPC1.id
+  cidr_block        = var.SUBNET-PUBLIC2
+  availability_zone = var.AWS-AZ2
   tags = {
-    Name = "ATD_public2"
+    Name = "PUBLIC2"
   }
 }
-resource "aws_subnet" "ATD_private3" {
-  depends_on        = [aws_vpc.ATD_VPC]
-  vpc_id            = aws_vpc.ATD_VPC.id
-  cidr_block        = var.subnet_private3
-  availability_zone = var.aws_az1
+resource "aws_subnet" "PRIVATE3" {
+  depends_on        = [aws_vpc.VPC1]
+  vpc_id            = aws_vpc.VPC1.id
+  cidr_block        = var.SUBNET-PRIVATE3
+  availability_zone = var.AWS-AZ1
   tags = {
-    Name = "ATD_private3"
+    Name = "PRIVATE3"
   }
 }
-resource "aws_subnet" "ATD_private4" {
-  depends_on        = [aws_vpc.ATD_VPC]
-  vpc_id            = aws_vpc.ATD_VPC.id
-  cidr_block        = var.subnet_private4
-  availability_zone = var.aws_az2
+resource "aws_subnet" "PRIVATE4" {
+  depends_on        = [aws_vpc.VPC1]
+  vpc_id            = aws_vpc.VPC1.id
+  cidr_block        = var.SUBNET-PRIVATE4
+  availability_zone = var.AWS-AZ2
   tags = {
-    Name = "ATD_private4"
+    Name = "PRIVATE4"
   }
 }
 # Configure an internet gateway
-resource "aws_internet_gateway" "ATD_IGW" {
-  vpc_id  = aws_vpc.ATD_VPC.id
+resource "aws_internet_gateway" "IGW" {
+  vpc_id = aws_vpc.VPC1.id
   tags = {
-    Name = "ATD_VPC-ATD_IGW"
+    Name = "VPC1-IGW"
   }
 }
 
-# Configure a default route
-resource "aws_route_table" "ATD_PublicRT" {
+# Configure a default route for the PUBLIC subnets toward the IGW
+resource "aws_route_table" "PUBLIC-RT" {
   depends_on = [
-    aws_vpc.ATD_VPC,
-    aws_internet_gateway.ATD_IGW
+    aws_vpc.VPC1,
+    aws_internet_gateway.IGW
   ]
-  vpc_id = aws_vpc.ATD_VPC.id
+  vpc_id = aws_vpc.VPC1.id
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.ATD_IGW.id
+    gateway_id = aws_internet_gateway.IGW.id
   }
   tags = {
-    Name = "ATD_PublicRT"
+    Name = "PUBLIC-RT"
   }
 }
-resource "aws_route_table" "ATD_PrivateRT" {
-  depends_on = [
-    aws_vpc.ATD_VPC,
-    aws_internet_gateway.ATD_IGW
-  ]
-  vpc_id = aws_vpc.ATD_VPC.id
+
+# Configre an Elastic IP for the NAT Gateway
+resource "aws_eip" "EIP1" {
+  vpc = true
   tags = {
-    Name = "ATD_PrivateRT"
+    Name = "EIP1"
+  }
+}
+
+# Configure a NAT Gateway
+resource "aws_nat_gateway" "NATGW" {
+  depends_on    = [aws_internet_gateway.IGW]
+  allocation_id = aws_eip.EIP1.id
+  subnet_id     = aws_subnet.PUBLIC2.id
+  tags = {
+    Name = "NATGW"
+  }
+}
+
+# Configure a default route for the PRIVATE subnets toward the NAT GW
+resource "aws_route_table" "PRIVATE-RT" {
+  depends_on = [
+    aws_vpc.VPC1,
+    aws_internet_gateway.IGW
+  ]
+  vpc_id = aws_vpc.VPC1.id
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_nat_gateway.NATGW.id
+  }
+  tags = {
+    Name = "PRIVATE-RT"
   }
 }
 
 # Associate the default route with the cidr1 subnet
-resource "aws_route_table_association" "rt0-ATD_public1" {
-  subnet_id      = aws_subnet.ATD_public1.id
-  route_table_id = aws_route_table.ATD_PublicRT.id
+resource "aws_route_table_association" "rt0-PUBLIC1" {
+  subnet_id      = aws_subnet.PUBLIC1.id
+  route_table_id = aws_route_table.PUBLIC-RT.id
 }
-resource "aws_route_table_association" "rt0-ATD_public2" {
-  subnet_id      = aws_subnet.ATD_public2.id
-  route_table_id = aws_route_table.ATD_PublicRT.id
+resource "aws_route_table_association" "rt0-PUBLIC2" {
+  subnet_id      = aws_subnet.PUBLIC2.id
+  route_table_id = aws_route_table.PUBLIC-RT.id
 }
-resource "aws_route_table_association" "rt0-ATD_private3" {
-  subnet_id      = aws_subnet.ATD_private3.id
-  route_table_id = aws_route_table.ATD_PrivateRT.id
+resource "aws_route_table_association" "rt0-PRIVATE3" {
+  subnet_id      = aws_subnet.PRIVATE3.id
+  route_table_id = aws_route_table.PRIVATE-RT.id
 }
-resource "aws_route_table_association" "rt0-ATD_private4" {
-  subnet_id      = aws_subnet.ATD_private4.id
-  route_table_id = aws_route_table.ATD_PrivateRT.id
+resource "aws_route_table_association" "rt0-PRIVATE4" {
+  subnet_id      = aws_subnet.PRIVATE4.id
+  route_table_id = aws_route_table.PRIVATE-RT.id
 }
 
-# Configure a NACL for subnet ATD_Public1
-# resource "aws_network_acl" "ATD_Public1" {
-#   vpc_id      = aws_vpc.ATD_VPC.id
-#   subnet_ids  = [ aws_subnet.ATD_public1.id ]
+# Configure a NACL for subnet PUBLIC1
+# resource "aws_network_acl" "PUBLIC1" {
+#   vpc_id      = aws_vpc.VPC1.id
+#   subnet_ids  = [ aws_subnet.PUBLIC1.id ]
 
 #   ingress {
 #     rule_no    = 110
@@ -141,15 +165,15 @@ resource "aws_route_table_association" "rt0-ATD_private4" {
 #   }
 
 #   tags = {
-#     Name = "ATD_Public1"
+#     Name = "PUBLIC1"
 #   }
 # }
 
 # Configure a Security Groups to allow HTTP, SSH and ICMP PINGs
-resource "aws_security_group" "ATD_Bastion-SG" {
-  name        = "ATD_Bastion-SG"
+resource "aws_security_group" "BASTION-SG" {
+  name        = "BASTION-SG"
   description = "Allow inbound SSH traffic"
-  vpc_id      = aws_vpc.ATD_VPC.id
+  vpc_id      = aws_vpc.VPC1.id
 
   ingress {
     description = "RemoteAdmin"
@@ -172,41 +196,35 @@ resource "aws_security_group" "ATD_Bastion-SG" {
     protocol    = "tcp"
     cidr_blocks = ["192.168.0.0/24"]
   }
-  # egress {
-  #   description = "Allow everything else"
-  #   from_port   = 0
-  #   to_port     = 0
-  #   protocol    = "-1"
-  #   cidr_blocks = ["0.0.0.0/0"]
-  # }
+  egress {
+    description = "Allow everything else"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
   tags = {
-    Name = "ATD_Bastion-SG"
+    Name = "BASTION-SG"
   }
 }
 
 # Configuring the local SSH key
-resource "aws_key_pair" "key" {
-  key_name   = "key"
+resource "aws_key_pair" "KEY" {
+  key_name   = "KEY"
   public_key = file("key.pub")
 }
 
-# Configuring the cloud-init script
-data "template_file" "cloud-init-config" {
-  template = file("cloud-init-ec2.yaml")
-}
-
 # Configuring EC2 Instance for the Bastion Host in the Public subnet
-resource "aws_instance" "BastionHost" {
-  ami           = data.aws_ami.latest-ubuntu.id
-  instance_type = "t2.nano"
-  key_name      = aws_key_pair.key.key_name
-  subnet_id     = aws_subnet.ATD_public1.id
-  private_ip    = var.ec2_ip1
+resource "aws_instance" "BASTION" {
+  ami                         = data.aws_ami.latest-ubuntu.id
+  instance_type               = "t2.nano"
+  key_name                    = aws_key_pair.KEY.key_name
+  subnet_id                   = aws_subnet.PUBLIC1.id
+  private_ip                  = var.EC2-IP1
   associate_public_ip_address = true
-  vpc_security_group_ids  = [ aws_security_group.ATD_Bastion-SG.id ]
-  user_data               = data.template_file.cloud-init-config.rendered 
+  vpc_security_group_ids      = [aws_security_group.BASTION-SG.id]
   tags = {
-    "Name"      = "BastionHost"
+    "Name" = "BASTION"
   }
 }
 
@@ -224,11 +242,11 @@ data "aws_ami" "latest-ubuntu" {
   }
 }
 
-# Configure a Security Group for ATD_Private34_SecGrp
-resource "aws_security_group" "ATD_Private34_SecGrp" {
-  name        = "ATD_Private34_SecGrp"
-  description = "Allow traffic to subnets Private3 and 4"
-  vpc_id      = aws_vpc.ATD_VPC.id
+# Configure a Security Group for PRIVATE34-SG
+resource "aws_security_group" "PRIVATE34-SG" {
+  name        = "PRIVATE34-SG"
+  description = "Allow traffic to subnets PRIVATE3 and 4"
+  vpc_id      = aws_vpc.VPC1.id
 
   ingress {
     description = "SSH from Bastion Host"
@@ -259,36 +277,34 @@ resource "aws_security_group" "ATD_Private34_SecGrp" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   tags = {
-    Name = "ATD_Private34_SecGrp"
+    Name = "PRIVATE34-SG"
   }
 }
 
-# Configuring EC2 Instance in the Private3 Subnet
-resource "aws_instance" "ATD_Private3" {
-  ami           = data.aws_ami.latest-ubuntu.id
-  instance_type = "t2.nano"
-  key_name      = aws_key_pair.key.key_name
-  subnet_id     = aws_subnet.ATD_private3.id
-  private_ip    = var.ec2_ip2
+# Configuring EC2 Instance in the PRIVATE3 Subnet
+resource "aws_instance" "APP-SERVER1" {
+  ami                         = data.aws_ami.latest-ubuntu.id
+  instance_type               = "t2.nano"
+  key_name                    = aws_key_pair.KEY.key_name
+  subnet_id                   = aws_subnet.PRIVATE3.id
+  private_ip                  = var.EC2-IP2
   associate_public_ip_address = false
-  vpc_security_group_ids  = [ aws_security_group.ATD_Private34_SecGrp.id ]
-  user_data               = data.template_file.cloud-init-config.rendered 
+  vpc_security_group_ids      = [aws_security_group.PRIVATE34-SG.id]
   tags = {
-    "Name"      = "App-Servers3"
+    "Name" = "APP-SERVER1"
   }
 }
 
-# Configuring EC2 Instance in the Private4 Subnet
-resource "aws_instance" "ATD_Private4" {
-  ami           = data.aws_ami.latest-ubuntu.id
-  instance_type = "t2.nano"
-  key_name      = aws_key_pair.key.key_name
-  subnet_id     = aws_subnet.ATD_private4.id
-  private_ip    = var.ec2_ip3
+# Configuring EC2 Instance in the PRIVATE4 Subnet
+resource "aws_instance" "APP-SERVER2" {
+  ami                         = data.aws_ami.latest-ubuntu.id
+  instance_type               = "t2.nano"
+  key_name                    = aws_key_pair.KEY.key_name
+  subnet_id                   = aws_subnet.PRIVATE4.id
+  private_ip                  = var.EC2-IP3
   associate_public_ip_address = false
-  vpc_security_group_ids  = [ aws_security_group.ATD_Private34_SecGrp.id ]
-  user_data               = data.template_file.cloud-init-config.rendered 
+  vpc_security_group_ids      = [aws_security_group.PRIVATE34-SG.id]
   tags = {
-    "Name"      = "App-Servers4"
+    "Name" = "APP-SERVER2"
   }
 }

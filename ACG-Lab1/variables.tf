@@ -1,44 +1,44 @@
-variable "aws_region" {
-    description = "AWS Region"
-    default     = "us-east-1"
+variable "AWS-REGION" {
+  description = "AWS Region"
+  default     = "us-east-1"
 }
-variable "aws_az1" {
-    description = "AWS Availability Zone 1"
-    default     = "us-east-1a"
+variable "AWS-AZ1" {
+  description = "AWS Availability Zone 1"
+  default     = "us-east-1a"
 }
-variable "aws_az2" {
-    description = "AWS Availability Zone 2"
-    default     = "us-east-1b"
+variable "AWS-AZ2" {
+  description = "AWS Availability Zone 2"
+  default     = "us-east-1b"
 }
-variable "vpc_cidr" {
+variable "VPC1-CIDR" {
   description = "CIDR block for the VPC"
   default     = "192.168.0.0/24"
 }
-variable "subnet_public1" {
+variable "SUBNET-PUBLIC1" {
   description = "CIDR block for the subnet"
   default     = "192.168.0.0/26"
 }
-variable "subnet_public2" {
+variable "SUBNET-PUBLIC2" {
   description = "CIDR block for the subnet"
   default     = "192.168.0.64/26"
 }
-variable "subnet_private3" {
+variable "SUBNET-PRIVATE3" {
   description = "CIDR block for the subnet"
   default     = "192.168.0.128/26"
 }
-variable "subnet_private4" {
+variable "SUBNET-PRIVATE4" {
   description = "CIDR block for the subnet"
   default     = "192.168.0.192/26"
 }
-variable "ec2_ip1" {
-  description = "EC2's IPv4 address in the Public1 subnet"
+variable "EC2-IP1" {
+  description = "EC2's IPv4 address in the PUBLIC1 subnet"
   default     = "192.168.0.10"
 }
-variable "ec2_ip2" {
-  description = "EC2's IPv4 address in the Private3 subnet"
+variable "EC2-IP2" {
+  description = "EC2's IPv4 address in the PRIVATE3 subnet"
   default     = "192.168.0.150"
 }
-variable "ec2_ip3" {
-  description = "EC2's IPv4 address in the Private3 subnet"
+variable "EC2-IP3" {
+  description = "EC2's IPv4 address in the PRIVATE3 subnet"
   default     = "192.168.0.200"
 }
