@@ -1,10 +1,36 @@
-# VPC Flow Logs
+# VPC Flow Logs to monitor traffic to a web server deployed using Terraform and clout-init
 
-### VPC Flow Logs to monitor traffic to a web server deployed using Terraform and clout-init
-Terraform config file for the webserver EC2 instance and associated VPC Flow Log profile: [`main.tf`](main.tf)
+## Setup
 
-[cloud-init](https://learn.hashicorp.com/tutorials/terraform/cloud-init) initialization for a simple Python web server based on the EC2 Ubuntu server (for those like me who don't have access to the AWS AMI marketplace):
-[`cloud-init-script-webserver.yaml`](cloud-init-script-webserver.yaml)
+AWS configuration settings and credentials, using the AWS cli:
+```
+aws configure
+```
+or using AWS profiles:
+`~/.aws/credentials`
+```
+[default]
+aws_access_key_id=AKIAIOSFODNN7EXAMPLE
+aws_secret_access_key=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+```
+`~/.aws/config`
+```
+[default]
+region=us-east-1
+output=text
+```
+
+Create an SSH key for the EC2 instances:
+```
+ssh-keygen -C "lab@example.com" -f key
+```
+
+## Terraform deployement  
+
+Terraform configuration:  
+- [`main.tf`](main.tf): main set of configuration for the webserver EC2 instance and associated VPC Flow Log profile
+- [`cloud-init-script-webserver.yaml`](cloud-init-script-webserver.yaml): [cloud-init](https://learn.hashicorp.com/tutorials/terraform/cloud-init) initialization for a simple Python web server based on the EC2 Ubuntu server (for those like me who don't have access to the AWS AMI marketplace)
+
 
 ---
 
@@ -15,7 +41,7 @@ You can also SSH to the EC2 instance:
 ssh -i key lab@$(terraform output -raw instance_public_ip)
 ```
 
-### CloudWatch Logging
+## CloudWatch Logging
 
 Check the flow logs in CloudWatch after a few minutes.
 You should see logs such as these:

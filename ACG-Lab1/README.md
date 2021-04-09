@@ -25,35 +25,44 @@ Create an SSH key for the EC2 instances:
 ssh-keygen -C "lab@example.com" -f key
 ```
 
+## Terraform 
+Terraform config file: 
+
+- [`main.tf`](main.tf) file main set of configuration
+- [`variables.tf`](variables.tf) file provides the values for the various CIDR ranges and IP adddresses.
+- [`outputs.tf`](outputs.tf) file allows to output the public IP address of the Bastion Host
+
 Initialize and apply the Terraform code:
 ```
 terraform init
 terraform apply -auto-approve
 ```
 
-
-## VPC 
-Terraform config file: 
-
-- [`main.tf`](main.tf)
-- [`variables.tf`](variables.tf) file provides the values for the various CIDR ranges and IP adddresses.
-- [`outputs.tf`](outputs.tf) file allows to output the public IP address of the Bastion Host
+## Results
 
 Ping the Bastion Host:
 ```
 ping -c 5 $(terraform output -raw instance_public_ip)
 ```
-SSH into the Bastion Host:
+SSH into the Bastion host:  
 ```
 ssh -i key ubuntu@$(terraform output -raw instance_public_ip)
 ```
-From the Bastion host, SSH into one of the App servers
+
+From the Bastion host, SSH into one of the App servers:   
+ssh -i key ubuntu@192.168.0.150  
+ssh -i key ubuntu@192.168.0.200  
 ```
-scp -i key -r key* ubuntu@<BASTION-Public-IP>:
-ssh -i key ubuntu@<BASTION-Public-IP>
-ssh -i key ubuntu@192.168.0.150
-ssh -i key ubuntu@192.168.0.200
-``` 
+    Note: You will have to copy the SSH keys to the Bastion host:  
+    ```
+    scp -i key -r key* ubuntu@<BASTION-Public-IP>:  
+    ssh -i key ubuntu@<BASTION-Public-IP>  
+    ```
+
+Once on one of the App servers, ping `google.com`:  
+```
+ping google.com  
+```
 
 ---
 ## Tasks:
