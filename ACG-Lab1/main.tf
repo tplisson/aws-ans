@@ -308,3 +308,60 @@ resource "aws_instance" "APP-SERVER2" {
     "Name" = "APP-SERVER2"
   }
 }
+
+
+# Configure AWS Flow Log with CoudWatch logging
+resource "aws_flow_log" "ACG-LAB1" {
+  iam_role_arn    = aws_iam_role.LAB1-ROLE.arn
+  log_destination = aws_cloudwatch_log_group.ACG-LAB1.arn
+  traffic_type    = "ALL"
+  vpc_id          = aws_vpc.VPC1.id
+}
+
+resource "aws_cloudwatch_log_group" "ACG-LAB1" {
+  name = "ACG-LAB1"
+}
+
+resource "aws_iam_role" "LAB1-ROLE" {
+  name = "LAB1-ROLE"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "vpc-flow-logs.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy" "ACG-LAB1-POLICY" {
+  name = "ACG-LAB1-POLICY"
+  role = aws_iam_role.LAB1-ROLE.id
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents",
+        "logs:DescribeLogGroups",
+        "logs:DescribeLogStreams"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}

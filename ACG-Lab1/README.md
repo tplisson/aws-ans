@@ -38,6 +38,7 @@ ssh -i key ubuntu@$(terraform output -raw instance_public_ip)
 ```
 
 From the Bastion host, SSH into one of the App servers:   
+```
 ssh -i key ubuntu@192.168.0.150  
 ssh -i key ubuntu@192.168.0.200  
 ```
