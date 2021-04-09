@@ -7,7 +7,7 @@ AWS configuration settings and credentials from the AWS cli:
 aws configure
 ```
 
-Create an SSH key for the EC2 instances:
+Create SSH keys for the EC2 instance:
 ```
 ssh-keygen -C "lab@example.com" -f key
 ```

@@ -271,8 +271,8 @@ resource "aws_security_group" "PRIVATE34-SG" {
   }
   egress {
     description = "Allow all ICMP"
-    from_port   = 0
-    to_port     = 0
+    from_port   = -1
+    to_port     = -1
     protocol    = "icmp"
     cidr_blocks = ["0.0.0.0/0"]
   }

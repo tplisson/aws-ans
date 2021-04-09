@@ -7,7 +7,7 @@ AWS configuration settings and credentials, using the AWS cli:
 aws configure
 ```
 
-Create an SSH key for the EC2 instances:
+Create SSH keys for the EC2 instances:
 ```
 ssh-keygen -C "lab@example.com" -f key
 ```
@@ -32,6 +32,12 @@ Ping the Bastion Host:
 ```
 ping -c 5 $(terraform output -raw instance_public_ip)
 ```
+
+Copy the SSH keys to the Bastion host:  
+```
+scp -i key -r key* ubuntu@<BASTION-Public-IP>:  
+```
+
 SSH into the Bastion host:  
 ```
 ssh -i key ubuntu@$(terraform output -raw instance_public_ip)
@@ -42,13 +48,8 @@ From the Bastion host, SSH into one of the App servers:
 ssh -i key ubuntu@192.168.0.150  
 ssh -i key ubuntu@192.168.0.200  
 ```
-    Note: You will have to copy the SSH keys to the Bastion host:  
-    ```
-    scp -i key -r key* ubuntu@<BASTION-Public-IP>:  
-    ssh -i key ubuntu@<BASTION-Public-IP>  
-    ```
 
-Once on one of the App servers, ping `google.com`:  
+Once on one of the App servers, ping `google.com` to verify that traffic is correctly routed via the NAT gateway in the public2 subnet:
 ```
 ping google.com  
 ```
