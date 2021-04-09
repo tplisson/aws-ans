@@ -28,7 +28,8 @@ Terraform configuration:
 
 Initialize and apply the Terraform code:
 ```
-terraform init
+terraform init  
+
 terraform apply -auto-approve
 ```
 
