@@ -32,7 +32,7 @@ Terraform configuration:
 - [`cloud-init-script-webserver.yaml`](cloud-init-script-webserver.yaml): [cloud-init](https://learn.hashicorp.com/tutorials/terraform/cloud-init) initialization for a simple Python web server based on the EC2 Ubuntu server (for those like me who don't have access to the AWS AMI marketplace)
 
 
----
+## Results  
 
 In your web browser, navigate to the Public IP address of your EC2 instance to verify that your app was actually deployed.  
 
