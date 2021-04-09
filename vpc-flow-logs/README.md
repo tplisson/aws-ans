@@ -68,7 +68,12 @@ You should see logs such as these:
 -------------------------------------------------------------------------------------------------------------------------------------------  
 ```
 
-### From the AWS CLI  
+<p align="center">
+<img src="https://d2908q01vomqb2.cloudfront.net/da4b9237bacccdf19c0760cab7aec4a8359010b0/2019/09/13/2019-08-13_10-41-04.png">
+</p>
+
+
+#### From the AWS CLI  
 
 Get the logs stream name for our flow log:
 ```
@@ -80,7 +85,3 @@ Display the flow logs:
 aws logs get-log-events --log-group-name=lab-demo --log-stream-name=eni-xxxxxxxx-all
 ```
 
-
-<p align="center">
-<img src="https://d2908q01vomqb2.cloudfront.net/da4b9237bacccdf19c0760cab7aec4a8359010b0/2019/09/13/2019-08-13_10-41-04.png">
-</p>
