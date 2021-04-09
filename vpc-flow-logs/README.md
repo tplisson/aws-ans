@@ -2,28 +2,17 @@
 
 ## Setup
 
-AWS configuration settings and credentials, using the AWS cli:
+AWS configuration settings and credentials from the AWS cli:
 ```
 aws configure
-```
-or using AWS profiles:
-`~/.aws/credentials`
-```
-[default]
-aws_access_key_id=AKIAIOSFODNN7EXAMPLE
-aws_secret_access_key=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
-```
-`~/.aws/config`
-```
-[default]
-region=us-east-1
-output=text
 ```
 
 Create an SSH key for the EC2 instances:
 ```
 ssh-keygen -C "lab@example.com" -f key
 ```
+
+Copy the 
 
 ## Terraform deployement  
 

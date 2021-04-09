@@ -19,7 +19,7 @@ users:
     ssh_import_id:
     lock_passwd: false
     ssh_authorized_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCorgCnJxl7sttVkaTxdOz9vdHUtk7fLwntAzEQi14MjAuJrP1u/Ke/li6D/+x9/BsK+G6HqBNvjB6w+4I7/zb1GuAQ2rIrwct+y0ukF/VWKhsgpIlHlJldpvdg0do6nrYtSiFdWw3RyDBfoXijOG7868dIkxkLdyilWLcu0a0wsHEh8Lkgw86n1BJoYTxVKfFrql+RWTDd2rfRMbMZ1B+OWxM/UssEspBbL6J5uyxUJNYEGjNXHH7Tt5s5dtp16k3Qr7d8pBi2zeO3azhOb8zY1v0hZ/z3GlcAlnHCokquJWCnzgTaA52QOc3SUxwuQMW7zRAm7TxWFg1A11s8BUoFHueOuvnoNCK8eF3geRZLwUmeQusyBrO7eTaoXJ42D+TZtinr2HYNbZTPbw7vJtqh4cZtd9pvUZUOwYI152qbch2xc5GOQfKgrMkKTpajAAujrXaOi97tVrkjC4jeNLNgF9rbP0UWSLcUF1g54fErJYpfNnXt23eW33HQR7foaus= lab@example.com
+      # YOUR SSH KEY GOES HERE: - ssh-rsa AAAABXXXXXXXXXX= lab@example.com
 
 write_files:
   - path: /index.html
