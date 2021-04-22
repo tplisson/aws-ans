@@ -72,6 +72,6 @@ ping google.com
     - Create the NAT Gateway, and set it as the target for the default route in the private route table.
     - Verify connectivity to the Internet from the private EC2 instance.
 
-![Lab 1 Diagram](ACG-Lab1.png)
+![Lab 1 Diagram](acg-lab1.png)
 
 
