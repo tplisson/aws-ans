@@ -1,7 +1,5 @@
 # DNS Route53 Lab
 
-cmcloudlab1634.info
-
 ## Setup
 
 AWS configuration settings and credentials, using the AWS cli:
@@ -54,7 +52,6 @@ In your browser, navigate to `www.<YOUR-DNS-FQDN>` and refresh several times the
     - Create a Security Group for the web servers.
     - Set up two Amazon EC2 instances `web1` and `web2` that each run a simple static website on Python
 - Configure Route53 records for `www.<YOUR-DNS-FQDN>`
-    - Create an A record for `web1` instance as a weighted routing policy 
-    - Create an A record for `web2` instance as a weighted routing policy
+    - Create a DNS A record for `web1` EC2 instance as a weighted routing policy 
+    - Create a DNS A record for `web2` EC2 instance as a weighted routing policy
 - Verify the HTTP requests are load balanced between the two instances.
-
