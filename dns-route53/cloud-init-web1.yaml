@@ -1,0 +1,76 @@
+#cloud-config
+# Add groups to the system
+# Adds the ubuntu group with members 'root' and 'sys'
+# and the empty group hashicorp.
+groups:
+  - ubuntu: [root,sys]
+  - lab
+
+# Add users to the system. Users are added after groups are added.
+users:
+  - default
+  - name: lab
+    gecos: lab
+    primary_group: lab
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users, admin
+    shell: /bin/bash
+    plain_text_passwd: 'lab123'
+    ssh_import_id:
+    lock_passwd: false
+    ssh_authorized_keys:
+      ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC5s76hdNba1nN7zAfEFAAzliBJioRyuDXtAR0CCeEJ0x5Pbb27bzaIZ35GGr/Lc8x+aR8tqv+X6GbAATRjVIqfLSCET8lwp5z0sYICv740kqGZ7OVeymLFugXRVVZkCkoGUDjkJztF0qLNYvNccrvudD5Rse47LXywXeIl35t4MW4gnoZpky9OSHtHMB8v47M2hK0Pfai6h4514XT51E3vgOwEJkXXFcmwFzSOvfUifEMLTYs7e0mphJGUPvTHaKpG7cPSv8zLJ/cU6PHEFxQc+zbCKEIxyGSuz+VzaG70zetXzMaz0CSH8hPjajX1K9GpSqhfJTo9yp2Im/I47gn8iCfXfiPou801QCuHJ2XYOmiM5bbXFY3qJ/PqB50+PG+Bow1igAVMYzAmWezm7T/b/Ym+EAnu71L0nePzQsCYZPnyYOYDJ8x+kacsmLvDGl4k0G+RqGTwgTfZGqQQu3yWOfisiP9NC78V0vO/kGPkOv5FB3Ii1cI9OKmyvseF3Zk= lab@example.com
+
+write_files:
+  - path: /index.html
+    content: |
+      <html>
+      <link rel="preconnect" href="https://fonts.gstatic.com">
+      <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;700&display=swap" rel="stylesheet">
+      <head>
+      <title>EC2 Website1</title>
+      </head>
+      <body>
+      <br/><br/>
+      <h1 align="center" style="font-family:Ubuntu">WELCOME TO YOUR WEBSITE HOSTED ON AN AMAZON AWS EC2 INSTANCE</h1>
+      <br/>
+      <h2 align="center" style="font-family:Ubuntu">WEB1</h2>
+      <br/>
+      <h3 align="center" style="font-family:Ubuntu">This website resides in Amazon AWS EC2 instance "Web1"</h3>
+      <br/><br/>
+      <p align="center">
+          <img src="https://docs.aws.amazon.com/fr_fr/vpc/latest/userguide/images/default-vpc-diagram.png">
+      </p>
+      <br/>
+      </body>
+      </html>
+  - path: /error.html
+    content: |
+      <html>
+      <link rel="preconnect" href="https://fonts.gstatic.com">
+      <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;700&display=swap" rel="stylesheet">
+      <head>
+      <title>Error 500</title>
+      </head>
+      <body>
+      <br/><br/>
+      <h1 align="center" style="font-family:Ubuntu">500</h1>
+      <h2 align="center" style="font-family:Ubuntu">Unexpected Error <b>:(</b></h2>
+      <br/><br/>
+      </body>
+      </html>
+
+apt:
+  primary:
+    - arches: [default]
+      search_dns: True
+
+# Downloads the Python package
+packages:
+  - python
+
+# Launch the SimpleHTTPServer on port 80
+runcmd:
+  - python -m SimpleHTTPServer 80 &
+
+final_message: "The system is finally up, after $UPTIME seconds"
