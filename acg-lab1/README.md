@@ -9,7 +9,8 @@ aws configure
 
 Create SSH keys for the EC2 instances:
 ```
-ssh-keygen -C "lab@example.com" -f key
+ssh-keygen -C "lab@example.com" -f ssh/key
+
 ```
 
 ## Terraform 
@@ -28,30 +29,25 @@ terraform apply -auto-approve
 
 ## Results
 
-Ping the Bastion Host:
+Ping and SSH into the Bastion host:  
 ```
-ping -c 5 $(terraform output -raw instance_public_ip)
+ping -c1 $(terraform output -raw instance_public_ip)
+
+ssh -i ssh/key lab@$(terraform output -raw instance_public_ip)
+```
+From the Bastion host, ping and SSH into one of the App servers:   
+```
+ping -c1 192.168.0.150  
+ping -c1 192.168.0.200
+
+ssh -i key 192.168.0.150  
+ssh -i key 192.168.0.200  
 ```
 
-Copy the SSH keys to the Bastion host:  
+Once on one of the App servers, ping `google.com` to verify that traffic is correctly routed via the NAT gateway in the public2 subnet (with a private IP of 192.168.0.100):
 ```
-scp -i key -r key* ubuntu@<BASTION-Public-IP>:  
-```
-
-SSH into the Bastion host:  
-```
-ssh -i key ubuntu@$(terraform output -raw instance_public_ip)
-```
-
-From the Bastion host, SSH into one of the App servers:   
-```
-ssh -i key ubuntu@192.168.0.150  
-ssh -i key ubuntu@192.168.0.200  
-```
-
-Once on one of the App servers, ping `google.com` to verify that traffic is correctly routed via the NAT gateway in the public2 subnet:
-```
-ping google.com  
+ping -c1 google.com  
+traceroute google.com  
 ```
 
 ---

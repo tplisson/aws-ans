@@ -280,7 +280,8 @@ resource "aws_lb" "VPC-B-NLB" {
 resource "aws_lb_target_group" "VPC-B-TARGETS" {
   name     = "VPC-B-TARGETS"
   port     = 80
-  protocol = "TCP"
+  protocol = "
+  "
   vpc_id   = aws_vpc.VPC-B.id
 }
 

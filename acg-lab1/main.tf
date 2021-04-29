@@ -82,9 +82,10 @@ resource "aws_route_table" "PUBLIC-RT" {
   }
 }
 
-# Configre an Elastic IP for the NAT Gateway
+# Configure an Elastic IP for the NAT Gateway
 resource "aws_eip" "EIP1" {
-  vpc = true
+  vpc                       = true
+  associate_with_private_ip = var.NATGW-IP
   tags = {
     Name = "EIP1"
   }
@@ -208,10 +209,15 @@ resource "aws_security_group" "BASTION-SG" {
   }
 }
 
+# Configuring the cloud-init script
+data "template_file" "cloud-init-config" {
+  template = file("cloud-init-ec2.yaml")
+}
+
 # Configuring the local SSH key
 resource "aws_key_pair" "KEY" {
   key_name   = "KEY"
-  public_key = file("key.pub")
+  public_key = file("ssh/key.pub")
 }
 
 # Configuring EC2 Instance for the Bastion Host in the Public subnet
@@ -223,6 +229,7 @@ resource "aws_instance" "BASTION" {
   private_ip                  = var.EC2-IP1
   associate_public_ip_address = true
   vpc_security_group_ids      = [aws_security_group.BASTION-SG.id]
+  user_data                   = data.template_file.cloud-init-config.rendered
   tags = {
     "Name" = "BASTION"
   }
@@ -234,7 +241,9 @@ data "aws_ami" "latest-ubuntu" {
   owners      = ["099720109477"] # Canonical
   filter {
     name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-*"]
+    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+    #values = ["ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*"]"
+    #values = ["ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-*"]
   }
   filter {
     name   = "virtualization-type"
@@ -276,6 +285,13 @@ resource "aws_security_group" "PRIVATE34-SG" {
     protocol    = "icmp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  egress {
+    description = "Allow everything else"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
   tags = {
     Name = "PRIVATE34-SG"
   }
@@ -290,6 +306,7 @@ resource "aws_instance" "APP-SERVER1" {
   private_ip                  = var.EC2-IP2
   associate_public_ip_address = false
   vpc_security_group_ids      = [aws_security_group.PRIVATE34-SG.id]
+  user_data                   = data.template_file.cloud-init-config.rendered
   tags = {
     "Name" = "APP-SERVER1"
   }
@@ -304,6 +321,7 @@ resource "aws_instance" "APP-SERVER2" {
   private_ip                  = var.EC2-IP3
   associate_public_ip_address = false
   vpc_security_group_ids      = [aws_security_group.PRIVATE34-SG.id]
+  user_data                   = data.template_file.cloud-init-config.rendered
   tags = {
     "Name" = "APP-SERVER2"
   }

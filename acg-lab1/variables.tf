@@ -42,3 +42,7 @@ variable "EC2-IP3" {
   description = "EC2's IPv4 address in the PRIVATE3 subnet"
   default     = "192.168.0.200"
 }
+variable "NATGW-IP" {
+  description = "NAT Gateway's IPv4 address in the PUBLIC2 subnet"
+  default     = "192.168.0.100"
+}
