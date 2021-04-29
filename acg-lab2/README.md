@@ -10,7 +10,6 @@ aws configure
 Create SSH keys for the EC2 instances:
 ```
 ssh-keygen -C "lab@example.com" -f ssh/key
-
 ```
 
 ## Terraform 
