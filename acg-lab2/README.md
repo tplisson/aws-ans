@@ -40,13 +40,13 @@ From the Bastion host, ping and SSH into one of the PRIVATE EC2 instance:
 ping -c1 10.0.1.11
 
 ssh -i key 10.0.1.11  
-```
+```  
 
 Verify that the Private EC2 instance can access the S3 bucket via the VPC Endpoint
-```
+```  
 aws s3 ls
 aws s3 ls <object>
-```
+```  
 
 ---
 ## Tasks:
