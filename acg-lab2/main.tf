@@ -48,7 +48,7 @@ resource "aws_internet_gateway" "IGW" {
     Name = "VPCE-DEMO-IGW"
   }
 }
-
+ 
 # Configure a default route for the PUBLIC subnets toward the IGW
 resource "aws_route_table" "PUBLIC-RT" {
   depends_on = [
