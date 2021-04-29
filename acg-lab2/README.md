@@ -30,7 +30,7 @@ terraform apply -auto-approve
 
 Ping and SSH into the PUBLIC EC2 instance:  
 ```
-ping -c1 $(terraform output -raw instance_public_ip)
+ping -c1 $(terraform output -raw instance_public_ip)  
 
 ssh -i ssh/key lab@$(terraform output -raw instance_public_ip)
 ```
