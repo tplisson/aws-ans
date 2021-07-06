@@ -18,52 +18,15 @@ users:
     shell: /bin/bash
     lock_passwd: false
     ssh_authorized_keys:
-      ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDSf+ayhgDys+WX6cdbme+3DUuLSb9IsPX+InRRWBDM3f2f6F4qI8SBFRbKOFo0YsATDyV9Tbc6TCUEdYDG6loQmgDubDHugbP/BObEvqTC3CsdntzqxivBusECAstos0v+TFL69FTwck7pUkJJJBidYDu491HTvOzQIvawpl1C9TU9a8pyFz8lZIwtlDxBnyaX8TjR8MVN/RuWkKkRuwH//WvZhxy/II/9d7kwfjYsA1uKju+TnPIwymZaMZtno/+HIdjd8khtsRV2dc18RNTy2wHvEGiplb0L6BezrhZ3scSLecGn8w8kPdizkG6mZjsaUYLC+Gvjp2mUR9dNIykGtYAzd46dSZ3125h2mcb2RS5gI9CtaaVLEHOtod6+qHB0zfm7ZLZkElzxLA8Ghj0EbJSjhPG/DJiK/YFM+T1nejHvj9RDOXzIDeblyWqp9KC57CgOH+x6d3UK6I15l+y9BT2HQRjMVRCr2E1QwgwXGB+grq48x5f+9Pi9vMJ8A68= lab@example.com
+      ssh-rsa <YOUR-PUBLIC-KEY-HERE>
 
 write_files:
   - path: /home/lab/key.pub
     content: |
-      ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDSf+ayhgDys+WX6cdbme+3DUuLSb9IsPX+InRRWBDM3f2f6F4qI8SBFRbKOFo0YsATDyV9Tbc6TCUEdYDG6loQmgDubDHugbP/BObEvqTC3CsdntzqxivBusECAstos0v+TFL69FTwck7pUkJJJBidYDu491HTvOzQIvawpl1C9TU9a8pyFz8lZIwtlDxBnyaX8TjR8MVN/RuWkKkRuwH//WvZhxy/II/9d7kwfjYsA1uKju+TnPIwymZaMZtno/+HIdjd8khtsRV2dc18RNTy2wHvEGiplb0L6BezrhZ3scSLecGn8w8kPdizkG6mZjsaUYLC+Gvjp2mUR9dNIykGtYAzd46dSZ3125h2mcb2RS5gI9CtaaVLEHOtod6+qHB0zfm7ZLZkElzxLA8Ghj0EbJSjhPG/DJiK/YFM+T1nejHvj9RDOXzIDeblyWqp9KC57CgOH+x6d3UK6I15l+y9BT2HQRjMVRCr2E1QwgwXGB+grq48x5f+9Pi9vMJ8A68= lab@example.com
+      ssh-rsa <YOUR-PUBLIC-KEY-HERE>
   - path: /home/lab/key
     content: |
-      -----BEGIN OPENSSH PRIVATE KEY-----
-      b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABlwAAAAdzc2gtcn
-      NhAAAAAwEAAQAAAYEA0n/msoYA8rPll+nHW5nvtw1Li0m/SLD1/iJ0UVgQzN39n+heKiPE
-      gRUWyjhaNGLAEw8lfU23OkwlBHWAxupaEJoA7mwx7oGz/wTmxL6kwtwrHZ7c6sYrwbrBAg
-      LLaLNL/kxS+vRU8HJO6VJCSSQYnWA7uPdR07zs0CL2sKZdQvU1PWvKchc/JWSMLZQ8QZ8m
-      l/E40fDFTf0blpCpEbsB//1r2YccvyCP/Xe5MH42LANbio7vk5zyMMpmWjGbZ6P/hyHY3f
-      JIbbEVdnXNfETU8tsB7xBoqZW9C+gXs64Wd7HEi3nBp/MPJD3Ys5BupmY7GlGCwvhr46dp
-      lEfXTSMpBrWAM3eOnUmd9duYdpnG9kUuYCPQrWmlSxBzraHevqhwdM35u2S2ZBJc8SwPBo
-      Y9BGyUo4TxvwyYiv2BTPk9Z3ox74/UQzl8yA3m5clqqfSguewoDh/send1CuiNeZfsvQU9
-      h0EYzFUQq9hNUMIMFxgfoK6uPMeX/vT4vbzCfAOvAAAFiLIn6V2yJ+ldAAAAB3NzaC1yc2
-      EAAAGBANJ/5rKGAPKz5Zfpx1uZ77cNS4tJv0iw9f4idFFYEMzd/Z/oXiojxIEVFso4WjRi
-      wBMPJX1NtzpMJQR1gMbqWhCaAO5sMe6Bs/8E5sS+pMLcKx2e3OrGK8G6wQICy2izS/5MUv
-      r0VPByTulSQkkkGJ1gO7j3UdO87NAi9rCmXUL1NT1rynIXPyVkjC2UPEGfJpfxONHwxU39
-      G5aQqRG7Af/9a9mHHL8gj/13uTB+NiwDW4qO75Oc8jDKZloxm2ej/4ch2N3ySG2xFXZ1zX
-      xE1PLbAe8QaKmVvQvoF7OuFnexxIt5wafzDyQ92LOQbqZmOxpRgsL4a+OnaZRH100jKQa1
-      gDN3jp1JnfXbmHaZxvZFLmAj0K1ppUsQc62h3r6ocHTN+btktmQSXPEsDwaGPQRslKOE8b
-      8MmIr9gUz5PWd6Me+P1EM5fMgN5uXJaqn0oLnsKA4f7Hp3dQrojXmX7L0FPYdBGMxVEKvY
-      TVDCDBcYH6CurjzHl/70+L28wnwDrwAAAAMBAAEAAAGBALRqsWVz214p+G/zDE6jqsUfHQ
-      +ePtfj7INMLpwFuiiNYDNtaz/89hCY7baXBCGAPhZX1g8GzDOoTdX7jEtxU46FIKU5kLZW
-      7tp17gDVUcw9/qpdngWPorNiCMlbcdIkUs77xeeYATExGBd8zJl52asRbz7Co5yygdqHDR
-      8tCCQ6nM4vFA4jhJjdDBSIx/iKmv6B3ux5y/JjLQEorfAnc7hgEc8YsffSxfc+ZTh+BJpG
-      qnAgwJCpZR+SapWFjSgQc4VhTACbz8fSmfpVjQWVIu0xkujJwCqiArXbGShFfGsguSylR7
-      YEbJm1nRNovru2vLkZ1UPZJaQGtpWY59Os8WStanzKLR1axBux8fj4TqmG72s9IvpiVSfD
-      FppCS+0MdorStFFiszPFm8r0an8GPkACOUJuSQDODS5/0tEtvZTR1mip2LOVsJMJrl2MWr
-      1Q1hWSUF6kljrE9adfN4ybTYOZdtWCERIm3OGxHEbLuTvcC7WOQPajGGzEKIjyz2Ln6QAA
-      AMEAi9npBY2kz4LVXixeI+6d2SFv0/JdtecddP/fch1EBjW+oFc2JF5RvWiEnkyH4vcwMj
-      k1B2U1nhxlx/4XQzOmfE65pLcqnWlBYgs+mfNhMjxtnjy7cswi4R7zxufOj6+V86yrLuYW
-      wKEzKOthsK5nqEco3kdQUX0/fcgp8Cs7pN5P9NWMkmbQvTDCGMzWuwn6Pzs1tnjF8blqbi
-      uZMPNFnh3A6Gv96UBsM6QYgKJyz/S/i8XhzfEAmPIRmOPWCZR8AAAAwQD1szhWA4tj/gS7
-      nnmfqXUhKvmWqTo4KvL75bBXqWL+yRATbrHp3ntEpBO1Z3c8lafAo3dA4w9hZyZeoniSqN
-      fGVz984IUc/FT5zgj0Lm4lkzmrHQwcVg5s09NJQEfnAwetbK5QSf5lKf9NiZgLp9e//VOH
-      ijAZGC6YDwLtfDiwH8nuI4ncKaI36vjH2EpmmrMbMx7+6/vXKDT0N6j+0i1LHrKOKXedtg
-      yypuNUZ2fkaKA9hZpNB4YHG46n4dn0V0sAAADBANtS65NN7e2QcDNuM9AOCM9klkq8k2K3
-      5p2vYSaCnzmb7FVNxKbN9xzWxv9928wavhdlvi/VB6R/xfMRTubv+CBgFGB33ToijmqKXX
-      DmIxi5UQchzVCTwyhXQkvP5yhnSad+nMiBhRTk28U0TZdXzUhCv77y+GEG1LFGrO2Pyrp7
-      dNB/OItWg0Bfz+ZM7mVz2E6maeXIz8t83Ci8GYsidMjB+dkprxA0Yh2LNMzOOEKA3fr2VQ
-      lZfCB9ke5j2dVSrQAAAA9sYWJAZXhhbXBsZS5jb20BAg==
-      -----END OPENSSH PRIVATE KEY-----
+      <YOUR-PRIVATE-KEY-HERE>
 
 apt:
   primary:
