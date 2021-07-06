@@ -18,15 +18,15 @@ users:
     shell: /bin/bash
     lock_passwd: false
     ssh_authorized_keys:
-      ssh-rsa <YOUR-PUBLIC-KEY-HERE>
+      ssh-rsa ### YOUR-PUBLIC-KEY-HERE ###
 
 write_files:
   - path: /home/lab/key.pub
     content: |
-      ssh-rsa <YOUR-PUBLIC-KEY-HERE>
+      ssh-rsa ### YOUR-PUBLIC-KEY-HERE ###
   - path: /home/lab/key
     content: |
-      <YOUR-PRIVATE-KEY-HERE>
+      ### YOUR-PRIVATE-KEY-HERE ###
 
 apt:
   primary:
