@@ -22,7 +22,7 @@ failure_criteria_for_creating_issues:
   operator: or
 
 # Define github asset name
-github_asset_name: "tplisson Github lab asset"
+github_asset_name: "tplisson Github AWS-ANS-C00-Prep Lab"
 
 # Define tags
 tags:
