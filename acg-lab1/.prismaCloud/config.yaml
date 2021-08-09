@@ -1,29 +1,27 @@
+						# Specify the template type. Valid values are as follows.
+						# - For Terraform: TF
+						# - For AWS CloudFormation: CFT
+						# - For Kubernetes: K8S
 
-# This is the configuration file for Iac Scan APIv2.
+						template_type: TF
 
-# Specify the template types.The valid values are TF, CFT, K8S
-template_type: TF
+						# Valid values for terraform_version are 0.11 or 0.12.
 
-# For Terraform, it is recommended to provide one of the following values: 0.11, 0.12 or 0.13.
-# For CFT and K8s, this can be omitted.
-template_version: 0.13
+						terraform_version: 0.12
 
-# For your template_type, fill in the details where applicable.
-# variables: Specify any environment variables(TF) or parameters(CFT) as key:value pairs under this attribute.
-# variable_files: Specify all the custom variable_files under here. It is an array of strings.
-# variable_files: If it is standard extension(.tfvars for terraform), then this can be omitted.
-# variable_files: For a custom extension, specify the variable file path from the root of the repo.
-template_parameters:
-  variable_files:
-  - './TF/tf12_variable_files/smelks.tfvars'
-  - './TF/tf12_nested_variable_files/network/smelks.tfvars'
-  variables:
-    cidr: 0.0.0.0/0
-    acl: public-read-write
-    AccessControl: PublicRead
+						# If  terraform_version is 0.12, then terraform_012_parameters is required.
+						# The value of terraform_012_parameters is an array of root_modules. The value for root_module is relative to your repository branch root directory.
+						# Each root module can have:
+						# - variable_files, which is an array of variable file names relative to your repository branch root directory
+						# - variables, which is an array of name/value pairs that identify the input variables for the module
 
-# Define tags to identify your particular scan. You can use these tags to search the scan details on the Prisma Cloud.
-tags:
-  Org:  Engineering
-  Team: Shift_Left
-  Env: Dev
+						terraform_012_parameters:
+						- root_module: scan/rich-value-types/
+						variables:
+						- name: check
+						value: public-read-write
+						- name: varName2
+						value: varValue2
+						- root_module: scan/for-expressions/
+						variable_files:
+						- scan/rich-value-types/expressions/variables.tf
