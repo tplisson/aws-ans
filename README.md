@@ -1,5 +1,7 @@
 # AWS Certified Advanced Networking – Specialty (ANS-C00)
 
+[![Infrastructure Tests](https://www.bridgecrew.cloud/badges/github/tplisson/aws-ans-c00-prep/general)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=tplisson%2FAWS-ANS-C00-Prep&benchmark=INFRASTRUCTURE+SECURITY)
+
 This is my preparation notes for the AWS Certified Advanced Networking – Specialty (ANS-C00) exam.  
 https://aws.amazon.com/certification/certified-advanced-networking-specialty/
 
