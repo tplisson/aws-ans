@@ -2,6 +2,21 @@
 
 [![Infrastructure Tests](https://www.bridgecrew.cloud/badges/github/tplisson/aws-ans-c00-prep/general)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=tplisson%2FAWS-ANS-C00-Prep&benchmark=INFRASTRUCTURE+SECURITY)
 
+[![Infrastructure Tests](https://www.bridgecrew.cloud/badges/github/tplisson/aws-ans-c00-prep/pci)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=tplisson%2FAWS-ANS-C00-Prep&benchmark=PCI-DSS+V3.2)
+
+[![Infrastructure Tests](https://www.bridgecrew.cloud/badges/github/tplisson/aws-ans-c00-prep/pci_dss_v321)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=tplisson%2FAWS-ANS-C00-Prep&benchmark=PCI-DSS+V3.2.1)
+
+[![Infrastructure Tests](https://www.bridgecrew.cloud/badges/github/tplisson/aws-ans-c00-prep/nist)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=tplisson%2FAWS-ANS-C00-Prep&benchmark=NIST-800-53)
+
+[![Infrastructure Tests](https://www.bridgecrew.cloud/badges/github/tplisson/aws-ans-c00-prep/iso)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=tplisson%2FAWS-ANS-C00-Prep&benchmark=ISO27001)
+
+[![Infrastructure Tests](https://www.bridgecrew.cloud/badges/github/tplisson/aws-ans-c00-prep/soc2)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=tplisson%2FAWS-ANS-C00-Prep&benchmark=SOC2)
+
+[![Infrastructure Tests](https://www.bridgecrew.cloud/badges/github/tplisson/aws-ans-c00-prep/hipaa)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=tplisson%2FAWS-ANS-C00-Prep&benchmark=HIPAA)
+
+[![Infrastructure Tests](https://www.bridgecrew.cloud/badges/github/tplisson/aws-ans-c00-prep/cis_kubernetes)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=tplisson%2FAWS-ANS-C00-Prep&benchmark=CIS+KUBERNETES+V1.5)
+
+
 This is my preparation notes for the AWS Certified Advanced Networking – Specialty (ANS-C00) exam.  
 https://aws.amazon.com/certification/certified-advanced-networking-specialty/
 
