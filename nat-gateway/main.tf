@@ -126,6 +126,7 @@ resource "aws_instance" "web" {
   tags = {
     Name = "nat-gw-demo-ec2-web"
   }
+  ebs_optimized = true
 }
 
 # Configuring 3x EC2 instances for DB servers in the private subnet
@@ -146,7 +147,6 @@ resource "aws_instance" "db" {
   tags = {
     Name = "nat-gw-demo-ec2-db${count.index + 1}"
   }
-  ebs_optimized = true
 }
 
 # Getting the AWS AMI ID for the lastest version of Ubuntu 16.04 server
