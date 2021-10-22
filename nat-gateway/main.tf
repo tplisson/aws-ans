@@ -146,6 +146,7 @@ resource "aws_instance" "db" {
   tags = {
     Name = "nat-gw-demo-ec2-db${count.index + 1}"
   }
+  ebs_optimized = true
 }
 
 # Getting the AWS AMI ID for the lastest version of Ubuntu 16.04 server
