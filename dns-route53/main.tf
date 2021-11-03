@@ -138,6 +138,9 @@ resource "aws_instance" "web2" {
   tags = {
     "Name" = "web2"
   }
+  *_block_device {
+    encrypted = true
+  }
 }
 
 # Getting the AWS AMI ID for the lastest version of Ubuntu 16.04 server
