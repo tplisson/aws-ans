@@ -147,6 +147,9 @@ resource "aws_instance" "db" {
     Name = "nat-gw-demo-ec2-db${count.index + 1}"
   }
   monitoring = true
+  *_block_device {
+    encrypted = true
+  }
 }
 
 # Getting the AWS AMI ID for the lastest version of Ubuntu 16.04 server

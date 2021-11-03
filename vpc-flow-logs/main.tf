@@ -137,6 +137,9 @@ resource "aws_instance" "webserver" {
     "Terraform" = "true"
   }
 
+  *_block_device {
+    encrypted = true
+  }
 }
 
 # Getting the AWS AMI ID for the lastest version of Ubuntu 16.04 server
