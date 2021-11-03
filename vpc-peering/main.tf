@@ -188,6 +188,9 @@ resource "aws_instance" "vm2" {
   tags = {
     Name = "vm2"
   }
+  *_block_device {
+    encrypted = true
+  }
 }
 
 # Configure a route from VPC2 to VPC1
